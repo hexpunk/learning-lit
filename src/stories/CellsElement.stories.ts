@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/web-components";
 
-import "../Cells";
+import "../Cells/CellsElement";
 
 const meta: Meta = {
   title: "7GUIs/Cells",

@@ -1,12 +1,12 @@
 import { css, html, LitElement } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
-
-const COLUMNS = "abcdefghijklmnopqrstuvwxyz".split("");
-const ROWS = Array.from({ length: 100 }, (_, i) => i);
+import { range } from "lit/directives/range.js";
+import { COLUMNS, ROWS } from "./constants";
+import { Cell, Env, Textual } from "./types";
 
 @customElement("cells-element")
-export class Cells extends LitElement {
+export class CellsElement extends LitElement {
   static styles = css`
     :host {
       display: block;
@@ -63,34 +63,28 @@ export class Cells extends LitElement {
     }
   `;
 
-  @state() private data = new Map<string, string>(
-    COLUMNS.flatMap((column) => ROWS.map((row) => [`${column}${row}`, ""])),
-  );
+  @state() private data = new Env(COLUMNS.length, ROWS.length);
 
   render() {
     return html`
       <div class="cells-root">
         <div class="corner"></div>
+        ${map(range(COLUMNS.length), (col) => html`<div class="col-header">${COLUMNS[col].toUpperCase()}</div>`)}
         ${map(
-          COLUMNS,
-          (col) => html`<div class="col-header">${col.toUpperCase()}</div>`,
-        )}
-        ${map(
-          ROWS,
+          range(ROWS.length),
           (row) => html`
             <div class="row-header">${row}</div>
             ${map(
-              COLUMNS,
+              range(COLUMNS.length),
               (col) =>
                 html` <input
                   class="cell"
                   type="text"
-                  .value=${this.data.get(`${col}${row}`) || ""}
-                  @input=${(e: Event) =>
-                    this.data.set(
-                      `${col}${row}`,
-                      (e.target as HTMLInputElement).value,
-                    )}
+                  .value=${this.data.get(col, row).toString()}
+                  @input=${(e: Event) => {
+                    this.data.set(col, row, new Cell(col, row, new Textual((e.target as HTMLInputElement).value)));
+                    this.requestUpdate();
+                  }}
                 />`,
             )}
           `,
