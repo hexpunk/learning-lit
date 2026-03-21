@@ -3,7 +3,8 @@ import { customElement, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 import { range } from "lit/directives/range.js";
 import { COLUMNS, ROWS } from "./constants";
-import { Cell, Env, Textual } from "./types";
+import { Cell, Env } from "./types";
+import { parse } from "./parse";
 
 @customElement("cells-element")
 export class CellsElement extends LitElement {
@@ -13,6 +14,8 @@ export class CellsElement extends LitElement {
       overflow: auto;
       max-height: 300px;
       max-width: 800px;
+
+      font-family: sans-serif;
     }
 
     .cells-root {
@@ -27,15 +30,22 @@ export class CellsElement extends LitElement {
       top: 0;
       left: 0;
       z-index: 3;
-      background: white;
+      background-color: #eee;
+      border: 1px solid #ccc;
+      border-top-left-radius: 6px;
+      box-shadow: -10px -10px 0 0 white;
     }
 
     .col-header {
       position: sticky;
       top: 0;
       z-index: 2;
-      background: white;
       text-align: center;
+      padding-top: 2px;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      border-right: 1px solid #ccc;
+      background-color: #eee;
     }
 
     .row-header {
@@ -44,6 +54,12 @@ export class CellsElement extends LitElement {
       z-index: 1;
       background: white;
       text-align: right;
+      padding-right: 4px;
+      padding-top: 2px;
+      border-right: 1px solid #ccc;
+      border-left: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      background-color: #eee;
     }
 
     .cell {
@@ -55,6 +71,7 @@ export class CellsElement extends LitElement {
       border: none;
       border-bottom: 1px solid #ccc;
       border-right: 1px solid #ccc;
+      text-align: right;
     }
 
     .cell:focus {
@@ -82,7 +99,7 @@ export class CellsElement extends LitElement {
                   type="text"
                   .value=${this.data.get(col, row).toString()}
                   @input=${(e: Event) => {
-                    this.data.set(col, row, new Cell(col, row, new Textual((e.target as HTMLInputElement).value)));
+                    this.data.set(col, row, new Cell(col, row, parse((e.target as HTMLInputElement).value)));
                     this.requestUpdate();
                   }}
                 />`,
