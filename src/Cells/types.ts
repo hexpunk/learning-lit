@@ -26,8 +26,8 @@ export class Env {
     return this.store.get(this.coordToKey(col, row)) as Cell;
   }
 
-  set(col: number, row: number, cell: Cell) {
-    this.store.set(this.coordToKey(col, row), cell);
+  set(col: number, row: number, formula: Formula) {
+    this.store.set(this.coordToKey(col, row), new Cell(col, row, formula));
   }
 }
 

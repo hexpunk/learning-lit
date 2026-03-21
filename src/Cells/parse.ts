@@ -3,7 +3,7 @@ import { Application, Coord, Empty, Number, Range, Textual, type Formula } from 
 
 function cell(input: string): Coord | void {
   if (/^[A-Za-z]\d+$/.test(input)) {
-    const column = COLUMNS.indexOf(input.charAt(0).toLowerCase());
+    const column = COLUMNS.indexOf(input.charAt(0));
     const row = parseInt(input.slice(1), 10);
     return new Coord(row, column);
   }
