@@ -4,33 +4,6 @@ export abstract class Formula {
   abstract toString(): string;
 }
 
-export class Env {
-  private store = new Map<number, Cell>();
-
-  constructor(
-    private numColumns: number,
-    private numRows: number,
-  ) {
-    for (let col = 0; col < numColumns; col++) {
-      for (let row = 0; row < numRows; row++) {
-        this.store.set(this.coordToKey(col, row), new Cell(col, row));
-      }
-    }
-  }
-
-  private coordToKey(col: number, row: number): number {
-    return row * this.numColumns + col;
-  }
-
-  get(col: number, row: number): Cell {
-    return this.store.get(this.coordToKey(col, row)) as Cell;
-  }
-
-  set(col: number, row: number, formula: Formula) {
-    this.store.set(this.coordToKey(col, row), new Cell(col, row, formula));
-  }
-}
-
 export class Coord extends Formula {
   constructor(
     public readonly row: number,
@@ -93,17 +66,5 @@ export class Application extends Formula {
 export class Empty extends Textual {
   constructor() {
     super("");
-  }
-}
-
-export class Cell {
-  constructor(
-    public readonly column: number,
-    public readonly row: number,
-    public formula: Formula = new Empty(),
-  ) {}
-
-  toString() {
-    return this.formula.toString();
   }
 }

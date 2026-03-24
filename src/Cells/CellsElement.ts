@@ -3,9 +3,8 @@ import { customElement, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 import { range } from "lit/directives/range.js";
 import { COLUMNS, ROWS } from "./constants";
-import { evaluate } from "./evaluate";
-import { parse } from "./parse";
-import { Env, Number, Textual } from "./types";
+import { Number, Textual } from "./types";
+import { Env } from "./evaluate";
 
 @customElement("cells-element")
 export class CellsElement extends LitElement {
@@ -99,11 +98,7 @@ export class CellsElement extends LitElement {
               const isLiteral = cell.formula instanceof Textual || cell.formula instanceof Number;
               const dataId = `${col}-${row}`;
               const isFocused = this.focusedCellId === dataId;
-              let value = isFocused
-                ? this.focusedCellValue
-                : isLiteral
-                  ? cell.toString()
-                  : evaluate(cell.formula, this.data).toString();
+              let value = isFocused ? this.focusedCellValue : isLiteral ? cell.toString() : cell.value;
 
               return html` <input
                 class="cell"
@@ -119,7 +114,7 @@ export class CellsElement extends LitElement {
                 }}
                 @blur=${(e: Event) => {
                   if (this.focusedCellId === (e.target as HTMLInputElement).dataset.id) {
-                    this.data.set(col, row, parse(this.focusedCellValue));
+                    this.data.set(col, row, this.focusedCellValue);
                     this.focusedCellId = null;
                     this.focusedCellValue = "";
                   }
