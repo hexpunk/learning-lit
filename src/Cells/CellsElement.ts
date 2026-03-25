@@ -1,10 +1,11 @@
 import { css, html, LitElement } from "lit";
 import { customElement, state } from "lit/decorators.js";
+import { guard } from "lit/directives/guard.js";
 import { map } from "lit/directives/map.js";
 import { range } from "lit/directives/range.js";
 import { COLUMNS, ROWS } from "./constants";
-import { Number, Textual } from "./types";
 import { Env } from "./evaluate";
+import { Number, Textual } from "./types";
 
 @customElement("cells-element")
 export class CellsElement extends LitElement {
@@ -100,26 +101,30 @@ export class CellsElement extends LitElement {
               const isFocused = this.focusedCellId === dataId;
               let value = isFocused ? this.focusedCellValue : isLiteral ? cell.toString() : cell.value;
 
-              return html` <input
-                class="cell"
-                type="text"
-                data-id="${dataId}"
-                .value=${value}
-                @input=${(e: Event) => {
-                  this.focusedCellValue = (e.target as HTMLInputElement).value;
-                }}
-                @focus=${(e: Event) => {
-                  this.focusedCellId = (e.target as HTMLInputElement).dataset.id || null;
-                  this.focusedCellValue = isLiteral ? cell.toString() : "=" + cell.formula.toString();
-                }}
-                @blur=${(e: Event) => {
-                  if (this.focusedCellId === (e.target as HTMLInputElement).dataset.id) {
-                    this.data.set(col, row, this.focusedCellValue);
-                    this.focusedCellId = null;
-                    this.focusedCellValue = "";
-                  }
-                }}
-              />`;
+              return guard(
+                [value],
+                () =>
+                  html` <input
+                    class="cell"
+                    type="text"
+                    data-id="${dataId}"
+                    .value=${value}
+                    @input=${(e: Event) => {
+                      this.focusedCellValue = (e.target as HTMLInputElement).value;
+                    }}
+                    @focus=${(e: Event) => {
+                      this.focusedCellId = (e.target as HTMLInputElement).dataset.id!;
+                      this.focusedCellValue = isLiteral ? cell.toString() : "=" + cell.formula.toString();
+                    }}
+                    @blur=${(e: Event) => {
+                      if (this.focusedCellId === (e.target as HTMLInputElement).dataset.id) {
+                        this.data.set(col, row, this.focusedCellValue);
+                        this.focusedCellId = null;
+                        this.focusedCellValue = "";
+                      }
+                    }}
+                  />`,
+              );
             })}
           `,
         )}
