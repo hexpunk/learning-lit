@@ -1,10 +1,8 @@
-import type { StorybookConfig } from '@storybook/web-components-vite';
+import type { StorybookConfig } from "@storybook/web-components-vite";
 
 const config: StorybookConfig = {
-  "stories": [
-    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
-  ],
-  "addons": [],
-  "framework": "@storybook/web-components-vite"
+  stories: ["../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  framework: "@storybook/web-components-vite",
+  addons: ["@github-ui/storybook-addon-performance-panel/universal"],
 };
 export default config;
