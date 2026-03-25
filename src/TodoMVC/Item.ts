@@ -1,5 +1,6 @@
 import { css, html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
 
 @customElement("todo-item")
 export class Item extends LitElement {
@@ -9,6 +10,10 @@ export class Item extends LitElement {
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
+    }
+
+    .label.checked {
+      text-decoration: line-through;
     }
 
     .label {
@@ -34,8 +39,8 @@ export class Item extends LitElement {
 
   render() {
     return html`
-      <input type="checkbox" ?checked=${this.checked} @change=${this.handleChange} />
-      <div class="label"><slot></slot></div>
+      <input type="checkbox" .checked=${this.checked} @change=${this.handleChange} />
+      <div class=${classMap({ label: true, checked: this.checked })}><slot></slot></div>
       <button @click=${this.handleDelete}>x</button>
     `;
   }
