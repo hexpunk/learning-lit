@@ -71,14 +71,10 @@ export class CircleDrawer extends LitElement {
   handleUndo() {
     const lastAction = this.undoStack.pop()!;
     if (lastAction.type === "add") {
-      this.circles = this.circles.filter(
-        (circle) => circle.id !== lastAction.circle.id,
-      );
+      this.circles = this.circles.filter((circle) => circle.id !== lastAction.circle.id);
       this.redoStack = [...this.redoStack, lastAction];
     } else if (lastAction.type === "edit") {
-      const oldCircle = this.circles.find(
-        (circle) => circle.id === lastAction.circle.id,
-      )!;
+      const oldCircle = this.circles.find((circle) => circle.id === lastAction.circle.id)!;
       this.circles = this.circles.map((circle) =>
         circle.id === lastAction.circle.id ? lastAction.circle : circle,
       );
@@ -92,13 +88,9 @@ export class CircleDrawer extends LitElement {
       this.circles = [...this.circles, lastUndoneAction.circle];
       this.undoStack = [...this.undoStack, lastUndoneAction];
     } else if (lastUndoneAction.type === "edit") {
-      const oldCircle = this.circles.find(
-        (circle) => circle.id === lastUndoneAction.circle.id,
-      )!;
+      const oldCircle = this.circles.find((circle) => circle.id === lastUndoneAction.circle.id)!;
       this.circles = this.circles.map((circle) =>
-        circle.id === lastUndoneAction.circle.id
-          ? lastUndoneAction.circle
-          : circle,
+        circle.id === lastUndoneAction.circle.id ? lastUndoneAction.circle : circle,
       );
       this.undoStack = [...this.undoStack, { type: "edit", circle: oldCircle }];
     }
@@ -131,14 +123,10 @@ export class CircleDrawer extends LitElement {
   editRadius(event: Event) {
     const input = event.target as HTMLInputElement;
     const newRadius = Number(input.value);
-    const oldCircle = this.circles.find(
-      (circle) => circle.id === this.selectedCircleId,
-    )!;
+    const oldCircle = this.circles.find((circle) => circle.id === this.selectedCircleId)!;
 
     this.circles = this.circles.map((circle) =>
-      circle.id === this.selectedCircleId
-        ? { ...circle, radius: newRadius }
-        : circle,
+      circle.id === this.selectedCircleId ? { ...circle, radius: newRadius } : circle,
     );
 
     this.undoStack = [
@@ -157,18 +145,13 @@ export class CircleDrawer extends LitElement {
   }
 
   render() {
-    const selectedCircle = this.circles.find(
-      (circle) => circle.id === this.selectedCircleId,
-    );
+    const selectedCircle = this.circles.find((circle) => circle.id === this.selectedCircleId);
 
     return html`
       <dialog ${ref(this.dialogRef)}>
         <div class="column">
           <button @click=${this.closeDialog}>x</button>
-          <p>
-            Adjust diameter of circle at (${selectedCircle?.x},
-            ${selectedCircle?.y}).
-          </p>
+          <p>Adjust diameter of circle at (${selectedCircle?.x}, ${selectedCircle?.y}).</p>
           <input
             type="range"
             min="10"
@@ -180,24 +163,10 @@ export class CircleDrawer extends LitElement {
       </dialog>
       <div class="column">
         <div class="row">
-          <button
-            .disabled=${this.undoStack.length === 0}
-            @click=${this.handleUndo}
-          >
-            Undo
-          </button>
-          <button
-            .disabled=${this.redoStack.length === 0}
-            @click=${this.handleRedo}
-          >
-            Redo
-          </button>
+          <button .disabled=${this.undoStack.length === 0} @click=${this.handleUndo}>Undo</button>
+          <button .disabled=${this.redoStack.length === 0} @click=${this.handleRedo}>Redo</button>
         </div>
-        <svg
-          viewBox="0 0 400 400"
-          xmlns="http://www.w3.org/2000/svg"
-          @click=${this.addCircle}
-        >
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" @click=${this.addCircle}>
           ${map(
             this.circles,
             (circle) => svg`

@@ -53,10 +53,7 @@ export class FlightBooker extends LitElement {
   render() {
     const regex = /\d{2}\.\d{2}\.\d{4}/;
     const bookDisabled =
-      this.date1 === "" ||
-      this.date2 === "" ||
-      !regex.test(this.date1) ||
-      !regex.test(this.date2);
+      this.date1 === "" || this.date2 === "" || !regex.test(this.date1) || !regex.test(this.date2);
     const resultMessage =
       this.flightType === "1"
         ? `You have booked a one-way flight on ${this.date1}`
@@ -64,19 +61,10 @@ export class FlightBooker extends LitElement {
 
     return html`
       <select name="flight-type" @change=${this.handleChange}>
-        <option value="1" ?selected=${this.flightType === "1"}>
-          one-way flight
-        </option>
-        <option value="2" ?selected=${this.flightType === "2"}>
-          return flight
-        </option>
+        <option value="1" ?selected=${this.flightType === "1"}>one-way flight</option>
+        <option value="2" ?selected=${this.flightType === "2"}>return flight</option>
       </select>
-      <input
-        name="date1"
-        pattern=${regex.source}
-        .value=${this.date1}
-        @input=${this.handleInput}
-      />
+      <input name="date1" pattern=${regex.source} .value=${this.date1} @input=${this.handleInput} />
       <input
         name="date2"
         pattern=${regex.source}
@@ -84,13 +72,7 @@ export class FlightBooker extends LitElement {
         .value=${this.date2}
         @input=${this.handleInput}
       />
-      <button
-        command="show-modal"
-        commandfor="result"
-        .disabled=${bookDisabled}
-      >
-        Book
-      </button>
+      <button command="show-modal" commandfor="result" .disabled=${bookDisabled}>Book</button>
       <dialog id="result">
         <div>
           <p>${resultMessage}</p>

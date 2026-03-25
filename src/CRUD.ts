@@ -57,10 +57,7 @@ export class CRUD extends LitElement {
   }
 
   handleCreate() {
-    this.items = [
-      ...this.items,
-      { id: this.nextId, firstName: "", lastName: "" },
-    ];
+    this.items = [...this.items, { id: this.nextId, firstName: "", lastName: "" }];
     this.nextId++;
   }
 
@@ -90,23 +87,17 @@ export class CRUD extends LitElement {
             id="filterPrefix"
             type="text"
             .value=${this.filterPrefix}
-            @input=${(e: Event) =>
-              (this.filterPrefix = (e.target as HTMLInputElement).value)}
+            @input=${(e: Event) => (this.filterPrefix = (e.target as HTMLInputElement).value)}
           />
         </div>
         <div class="rows">
           <select size="4" @change=${this.handleSelectedItemChange}>
             ${map(
               this.filterPrefix
-                ? this.items.filter((item) =>
-                    item.lastName.startsWith(this.filterPrefix),
-                  )
+                ? this.items.filter((item) => item.lastName.startsWith(this.filterPrefix))
                 : this.items,
               (item) =>
-                html`<option
-                  value=${item.id}
-                  .selected=${item.id === this.selectedId}
-                >
+                html`<option value=${item.id} .selected=${item.id === this.selectedId}>
                   ${item.lastName}, ${item.firstName}
                 </option>`,
             )}
@@ -118,8 +109,7 @@ export class CRUD extends LitElement {
                 id="firstName"
                 type="text"
                 .value=${this.firstName}
-                @input=${(e: Event) =>
-                  (this.firstName = (e.target as HTMLInputElement).value)}
+                @input=${(e: Event) => (this.firstName = (e.target as HTMLInputElement).value)}
               />
             </div>
             <div class="rows">
@@ -128,8 +118,7 @@ export class CRUD extends LitElement {
                 id="lastName"
                 type="text"
                 .value=${this.lastName}
-                @input=${(e: Event) =>
-                  (this.lastName = (e.target as HTMLInputElement).value)}
+                @input=${(e: Event) => (this.lastName = (e.target as HTMLInputElement).value)}
               />
             </div>
           </div>

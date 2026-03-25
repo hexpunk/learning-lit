@@ -35,10 +35,7 @@ export default class Timer extends LitElement {
   }
 
   render() {
-    const elapsed = Math.min(
-      Number(this.duration),
-      (Date.now() - this.start) / 1000,
-    );
+    const elapsed = Math.min(Number(this.duration), (Date.now() - this.start) / 1000);
 
     return cache(html`
       <div>
@@ -53,8 +50,7 @@ export default class Timer extends LitElement {
           min="0"
           max="30"
           .value=${this.duration}
-          @input=${(e: Event) =>
-            (this.duration = (e.target as HTMLInputElement).value)}
+          @input=${(e: Event) => (this.duration = (e.target as HTMLInputElement).value)}
         />
       </div>
       <button @click=${() => (this.start = Date.now())}>Reset</button>

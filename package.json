@@ -23,6 +23,6 @@
     "vitest": "4.1.0"
   },
   "prettier": {
-    "printWidth": 120
+    "printWidth": 100
   }
 }

@@ -89,7 +89,10 @@ export class CellsElement extends LitElement {
     return html`
       <div class="cells-root">
         <div class="corner"></div>
-        ${map(range(COLUMNS.length), (col) => html`<div class="col-header">${COLUMNS[col].toUpperCase()}</div>`)}
+        ${map(
+          range(COLUMNS.length),
+          (col) => html`<div class="col-header">${COLUMNS[col].toUpperCase()}</div>`,
+        )}
         ${map(
           range(ROWS.length),
           (row) => html`
@@ -99,7 +102,11 @@ export class CellsElement extends LitElement {
               const isLiteral = cell.formula instanceof Textual || cell.formula instanceof Number;
               const dataId = `${col}-${row}`;
               const isFocused = this.focusedCellId === dataId;
-              let value = isFocused ? this.focusedCellValue : isLiteral ? cell.toString() : cell.value;
+              let value = isFocused
+                ? this.focusedCellValue
+                : isLiteral
+                  ? cell.toString()
+                  : cell.value;
 
               return guard(
                 [value],
@@ -114,7 +121,9 @@ export class CellsElement extends LitElement {
                     }}
                     @focus=${(e: Event) => {
                       this.focusedCellId = (e.target as HTMLInputElement).dataset.id!;
-                      this.focusedCellValue = isLiteral ? cell.toString() : "=" + cell.formula.toString();
+                      this.focusedCellValue = isLiteral
+                        ? cell.toString()
+                        : "=" + cell.formula.toString();
                     }}
                     @blur=${(e: Event) => {
                       if (this.focusedCellId === (e.target as HTMLInputElement).dataset.id) {

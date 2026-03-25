@@ -108,7 +108,9 @@ export class Cell {
 
   recompute() {
     this.v = evaluate(this.f, this.env);
-    this.env.dispatchEvent(new CustomEvent("cell-updated", { detail: { column: this.column, row: this.row } }));
+    this.env.dispatchEvent(
+      new CustomEvent("cell-updated", { detail: { column: this.column, row: this.row } }),
+    );
   }
 
   toString() {
