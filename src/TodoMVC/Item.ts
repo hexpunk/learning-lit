@@ -21,6 +21,16 @@ export class Item extends LitElement {
       margin-left: 8px;
       margin-right: 8px;
     }
+
+    button {
+      border: none;
+      background: none;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #ededed;
+    }
   `;
 
   @property({ type: Boolean }) checked = false;
