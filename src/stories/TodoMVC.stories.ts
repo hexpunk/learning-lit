@@ -6,6 +6,9 @@ const meta: Meta = {
   title: "TodoMVC/Todo",
   component: "todo-mvc",
   tags: ["autodocs"],
+  globals: {
+    backgrounds: { value: "light" },
+  },
 };
 
 export default meta;

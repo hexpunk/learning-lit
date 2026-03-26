@@ -10,6 +10,16 @@ const preview: Preview = {
       },
     },
     addons: [addonPerformancePanel()],
+    backgrounds: {
+      default: "white",
+      values: [
+        { name: "white", value: "#ffffff" },
+        { name: "light", value: "#f5f5f5" },
+      ],
+    },
+  },
+  initialGlobals: {
+    backgrounds: { value: "white" },
   },
 };
 
